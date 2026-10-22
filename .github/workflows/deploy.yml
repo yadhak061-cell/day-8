@@ -42,10 +42,6 @@ jobs:
       run: |
         az aks get-credentials --resource-group test --name test --overwrite-existing
 
-    - name: Attach ACR to AKS (Ensures cluster can pull images)
-      run: |
-        az aks update -n test -g test --attach-acr day8registry
-
     - name: Deploy Helm Chart
       run: |
         helm upgrade --install day8-release ./day8-chart --namespace default --atomic --timeout 5m
