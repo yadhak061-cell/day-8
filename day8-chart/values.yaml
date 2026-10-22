@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: node:18-alpine
-  pullPolicy: IfNotPresent
+  repository: day8registry.azurecr.io/cloudpulse-app
+  pullPolicy: Always
   tag: latest
 
 service:
