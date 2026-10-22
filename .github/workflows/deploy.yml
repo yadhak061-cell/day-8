@@ -1,0 +1,33 @@
+name: Deploy Day 8 App to AKS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: 'latest'
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: \${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Get AKS Cluster Credentials
+      run: |
+        az aks get-credentials --resource-group test --name test --overwrite-existing
+
+    - name: Deploy Helm Chart
+      run: |
+        helm upgrade --install day8-release ./day8-chart --namespace default --atomic --timeout 5m
